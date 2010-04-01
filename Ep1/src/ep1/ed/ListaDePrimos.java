@@ -6,19 +6,23 @@ import java.util.ArrayList;
 public class ListaDePrimos {
 
 	private ArrayList<BigInteger> lista;
+	private ArrayList<BigInteger> listaMult2;
 	private BigInteger zero;
 	private BigInteger two;
 
 	public ListaDePrimos() {
 		zero = BigInteger.ZERO;
-		lista = new ArrayList<BigInteger>();
 		two = BigInteger.valueOf(2);
+
+		lista = new ArrayList<BigInteger>();
+		listaMult2 = new ArrayList<BigInteger>();
 
 	}
 
 	public void add(BigInteger item) {
 		synchronized (lista) {
 			lista.add(item);
+			listaMult2.add(item.multiply(two));
 		}
 	}
 
@@ -32,26 +36,28 @@ public class ListaDePrimos {
 			if (candidato.mod(primo).equals(zero)) {
 				return false;
 			}
+			if(listaMult2.get(i).compareTo(candidato)> 0)break;
 		}
 		return true;
 	}
 
 	public BigInteger get(int i) {
-		try {
+		boolean cond = true;
+		while (cond) {
 			synchronized (lista) {
-				return lista.get(i);
+				cond = lista.size() <= i;
 			}
-		} catch (IndexOutOfBoundsException e) {
-			skip();
-			return get(i);
+			if (cond) skip();
 		}
+		return lista.get(i);
 	}
 
 	private void skip() {
 		try {
-			Thread.sleep(555);
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
+			Thread.sleep(50);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }

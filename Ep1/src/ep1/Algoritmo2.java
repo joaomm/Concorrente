@@ -33,27 +33,8 @@ public class Algoritmo2 {
 	}
 
 	private void startThreads() {
-		long t1 = System.currentTimeMillis();
 		produtor.start();
-		try {
-			produtor.join();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		long t2 = System.currentTimeMillis();
 		consumidor.start();
-		try {
-			consumidor.join();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		long t3 = System.currentTimeMillis();
-		long e1 = t2 - t1;
-		long e2 = t3 - t2;
-		System.out.println("produtor demorou: "+e1+" consumidor demorou: "+e2);
 	}
 
 	private void createThreads() {

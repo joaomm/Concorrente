@@ -14,6 +14,7 @@ public class ProdutorDePrimos extends Thread {
 		this.n = n;
 		lista = listaDePrimos;
 		two = BigInteger.valueOf(2);
+		
 		lista.add(two);
 		lista.add(BigInteger.valueOf(3));
 	}
