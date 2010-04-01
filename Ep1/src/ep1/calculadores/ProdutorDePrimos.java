@@ -8,28 +8,33 @@ public class ProdutorDePrimos extends Thread {
 
 	private ListaDePrimos lista;
 	private final int n;
-	private BigInteger two;
+	private BigInteger seis;
+	private int qnt;
 
 	public ProdutorDePrimos(int n, ListaDePrimos listaDePrimos) {
 		this.n = n;
 		lista = listaDePrimos;
-		two = BigInteger.valueOf(2);
-		
-		lista.add(two);
+		seis = BigInteger.valueOf(6);
+
+		lista.add(BigInteger.valueOf(2));
 		lista.add(BigInteger.valueOf(3));
+		qnt = 0;
 	}
 
 	@Override
 	public void run() {
-		for (int i = 1; i <= n; i++)
-			lista.add(proximoPrimo());
+		for (BigInteger i = seis; qnt < n; i = i.add(seis)) {
+			checaEAdiciona(i.subtract(BigInteger.ONE));
+			if (qnt < n) 
+				checaEAdiciona(i.add(BigInteger.ONE));
+		}
 	}
 
-	private BigInteger proximoPrimo() {
-		BigInteger ultimo = lista.getLast();
-		for (BigInteger i = ultimo.add(two); true; i = i.add(two))
-			if (ehPrimo(i))
-				return i;
+	private void checaEAdiciona(BigInteger candidato) {
+		if (ehPrimo(candidato)) {
+			lista.add(candidato);
+			qnt++;
+		}
 	}
 
 	private boolean ehPrimo(BigInteger i) {
