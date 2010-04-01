@@ -2,6 +2,8 @@ package ep1;
 
 import java.util.LinkedList;
 
+import ep1.calculadores.CalculadorAlgoritmo1;
+
 public class Algoritmo1 {
 
 	private static LinkedList<CalculadorAlgoritmo1> listaDeThreads;

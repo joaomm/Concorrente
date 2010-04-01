@@ -1,4 +1,4 @@
-package ep1;
+package ep1.calculadores;
 
 
 public class CalculadorAlgoritmo1 extends Thread {
