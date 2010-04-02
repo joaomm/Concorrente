@@ -6,33 +6,27 @@ import java.util.ArrayList;
 public class ListaDePrimos {
 
 	private ArrayList<BigInteger> lista;
-	private ArrayList<BigInteger> listaMult2;
 	private BigInteger zero;
-	private BigInteger dois;
 
 	public ListaDePrimos() {
 		zero = BigInteger.ZERO;
-		dois = BigInteger.valueOf(2);
 
 		lista = new ArrayList<BigInteger>();
-		listaMult2 = new ArrayList<BigInteger>();
-
 	}
 
 	public void add(BigInteger item) {
 		synchronized (lista) {
 			lista.add(item);
-			listaMult2.add(item.multiply(dois));
 		}
 	}
 
 	public boolean ehPrimo(BigInteger candidato) {		
-		for (int i = 0; i < lista.size(); i++) {
+		int n = (lista.size() / 2)+1;
+		for (int i = 0; i < n; i++) {
 			BigInteger primo = lista.get(i);
 			if (candidato.mod(primo).equals(zero)) {
 				return false;
 			}
-			if(listaMult2.get(i).compareTo(candidato)> 0)break;
 		}
 		return true;
 	}
