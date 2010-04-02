@@ -26,10 +26,6 @@ public class ListaDePrimos {
 		}
 	}
 
-	public BigInteger getLast() {
-		return lista.get(lista.size() - 1);
-	}
-
 	public boolean ehPrimo(BigInteger candidato) {		
 		for (int i = 0; i < lista.size(); i++) {
 			BigInteger primo = lista.get(i);
@@ -52,11 +48,10 @@ public class ListaDePrimos {
 		return lista.get(i);
 	}
 
-	private void skip() {
+	protected void skip() {
 		try {
 			Thread.sleep(50);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

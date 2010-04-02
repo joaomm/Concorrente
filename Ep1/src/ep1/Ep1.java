@@ -1,5 +1,6 @@
 package ep1;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 
 public class Ep1 {
@@ -12,7 +13,7 @@ public class Ep1 {
 			} else if (algoritmoEscolhido.equals("2")) {
 				rodaAlgoritmo2(n, 2);
 			} else {
-				System.out.println("Ainda não implementamos o algoritmo 3!");
+				rodaAlgoritmo3(n, 2);
 			}
 		} else {
 			System.out.println("O programa precisa de dois parametros!");
@@ -36,6 +37,18 @@ public class Ep1 {
 
 		long begin = System.currentTimeMillis();
 		BigInteger sum = alg2.calculaSoma();
+		long end = System.currentTimeMillis();
+
+		long elapsedTime = end - begin;
+		System.out.println("Resultado para " + n + " foi: " + sum + " em "
+				+ elapsedTime + "ms");
+	}
+
+	private static void rodaAlgoritmo3(int n, int threads) {
+		Algoritmo3 alg3 = new Algoritmo3(n, threads);
+
+		long begin = System.currentTimeMillis();
+		BigDecimal sum = alg3.calculaSoma();
 		long end = System.currentTimeMillis();
 
 		long elapsedTime = end - begin;
