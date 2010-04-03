@@ -11,7 +11,6 @@ import ep1.ed.MemoriaCompartilhada;
 public class Algoritmo2 {
 	private final int n;
 	private CalculadorAlgoritmo2 consumidor;
-	private MemoriaCompartilhada compartilhada;
 	private int totalDeThreads;
 	private LinkedList<ProdutorDePrimos> produtores;
 
@@ -47,7 +46,7 @@ public class Algoritmo2 {
 	private void createThreads() {
 		ListaDePrimos listaDePrimos = new ListaDePrimos();
 
-		compartilhada = new MemoriaCompartilhada(n + 1, totalDeThreads,
+		MemoriaCompartilhada compartilhada = new MemoriaCompartilhada(n + 1, totalDeThreads,
 				listaDePrimos);
 
 		for (int i = 0; i < totalDeThreads; i++) {
