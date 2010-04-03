@@ -29,4 +29,8 @@ public class Candidato {
 	public void marcaQueEhPrimo() {
 		ehPrimo = SIM;
 	}
+
+	public boolean aindaNaoFoiMarcado() {
+		return ehPrimo == TALVEZ;	
+	}
 }

@@ -4,54 +4,114 @@ import java.util.Vector;
 
 import ep1.ed.Candidato;
 import ep1.ed.ListaDePrimos;
+import ep1.ed.MemoriaCompartilhada;
 
 public class ProdutorDePrimos extends Thread {
 
-	private static int numeroDeThreads = 1;
-	private final ListaDePrimos listaDePrimos;
-	private final Vector<Candidato> listaDeCandidatos;
-	private final int n;
+	private static final int NAOENCONTRADO = -1;
+	private static int numeroDeThreads = 0;
+	private static int tamanhoIntervalo = 1000;
+
 	private int id;
+	private int fim;
+	private int comeco;
+	private int proximoAnalizado;
+	private Vector<Candidato> candidatos;
+	private final MemoriaCompartilhada compartilhada;
 
-	public ProdutorDePrimos(int n, ListaDePrimos listaDePrimos,
-			Vector<Candidato> listaDeCandidatos) {
-		this.n = n;
-		this.listaDePrimos = listaDePrimos;
-		this.listaDeCandidatos = listaDeCandidatos;
+	public ProdutorDePrimos(MemoriaCompartilhada compartilhada) {
+		this.compartilhada = compartilhada;
 		this.id = ProdutorDePrimos.numeroDeThreads++;
+		this.proximoAnalizado = 0;
+		
+		inicializaCandidatos();
 	}
 
-	@Override
+	private void inicializaCandidatos() {
+		inicializaIntervalo();		
+		inicializaVetorCandidatos();
+		adiciona2ParaPrimeiraThread();
+	}
+
+	private void adiciona2ParaPrimeiraThread() {
+		if(id == 0)
+			candidatos.get(2).marcaQueEhPrimo();
+	}
+
+	private void inicializaIntervalo() {
+		int tamanho = ProdutorDePrimos.tamanhoIntervalo;
+		this.comeco = this.id * tamanho;
+		this.fim = comeco + tamanho;
+	}
+
+	private void inicializaVetorCandidatos() {
+		int tamanho = ProdutorDePrimos.tamanhoIntervalo;	
+		candidatos = new Vector<Candidato>(tamanho);
+		for (int i = 0; i < tamanho; i++) {
+			candidatos.add(i, new Candidato(i + comeco));
+		}
+	}
+
 	public void run() {
-		for (int i = 1; listaDePrimos.size() < n; i++) {
-			int ultimoPrimo = listaDePrimos.getLast();
-			int primo = primoDepoisDe(ultimoPrimo);
-			
-			marcaPrimoEncontrado(primo);
-			marcaMultiplosDe(primo);
-		}		
+		while(compartilhada.naoEncontroTodosPrimos()) {
+			marcaMultiplos();
+			if (ehMinhaVezDeEncontrarPrimo()) 
+				adicionaNovoPrimo();
+		}
 	}
 
-	private void marcaPrimoEncontrado(int primo) {
-		Candidato candidato = listaDeCandidatos.get(primo);
-		candidato.marcaQueEhPrimo();
-		listaDePrimos.add(primo);
+	private void marcaMultiplos() {
+		for (int i = proximoAnalizado; i < compartilhada.totalDePrimos(); i++) {
+			int primo = compartilhada.getPrimo(i);
+			marcaMultiplosDe(primo);
+			proximoAnalizado++;
+		}
 	}
 
 	private void marcaMultiplosDe(int primo) {
-		for (int i = primo + primo; i < listaDeCandidatos.size(); i += primo) {
-			Candidato candidato = listaDeCandidatos.get(i);
-			candidato.marcaQueNaoEhPrimo();
+		int primeiroMultiplo = primo + primo;
+		for (int i = primeiroMultiplo; i < fim; i += primo) {
+			if (i >= comeco) {
+				Candidato candidato = candidatos.get(i - comeco);
+				candidato.marcaQueNaoEhPrimo();
+			}
 		}
 	}
 
-	private int primoDepoisDe(int ultimoPrimo) {
-		for (int i = ultimoPrimo + 2; i < listaDeCandidatos.size(); i += 2) {
-			Candidato candidato = listaDeCandidatos.get(i);
-			if (candidato.ehPrimo() == Candidato.TALVEZ) {
+	private void adicionaNovoPrimo() {		
+		int novoPrimo = encontraNovoPrimo();
+		if (novoPrimo == NAOENCONTRADO) passaVez();
+		else compartilhada.adicionaPrimo(novoPrimo);
+	}
+
+	private int encontraNovoPrimo() {
+		int ultimoPrimo = compartilhada.ultimoPrimo();
+		int i = ultimoPrimo + 1;
+		if(ultimoPrimo < comeco) i = comeco; 
+		
+		for (; i < fim; i++) {
+			Candidato candidato = candidatos.get(i - comeco);
+			if (candidato.aindaNaoFoiMarcado())
 				return candidato.getValor();
-			}
 		}
-		return 0;
+		return NAOENCONTRADO;
+	}
+
+	private void passaVez() {
+		compartilhada.trocaVez();
+		reajustaIntervalo();
+		inicializaVetorCandidatos();
+		this.proximoAnalizado = 0;
+	}
+
+
+	private void reajustaIntervalo() {
+		int tamanho = ProdutorDePrimos.tamanhoIntervalo;
+		comeco += 2 * tamanho; 
+		fim = comeco + tamanho; 
+	}
+
+	private boolean ehMinhaVezDeEncontrarPrimo() {
+		return compartilhada.ehVezDo(id);
 	}
 }
