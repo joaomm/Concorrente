@@ -32,29 +32,20 @@ public class ProdutorDePrimosGemeos extends Thread {
 			BigInteger primo1 = i.subtract(BigInteger.ONE);
 			BigInteger primo2 = i.add(BigInteger.ONE);
 
-			TestadorDePrimalidade teste1 = new TestadorDePrimalidade(primo1,
-					listaDePrimos);
-			TestadorDePrimalidade teste2 = new TestadorDePrimalidade(primo2,
-					listaDePrimos);
-			teste1.start();
-			teste2.start();
+			boolean ehPrimo1 = testaEAdiciona(primo1);
+			boolean ehPrimo2 = testaEAdiciona(primo2);
 
-			try {
-				teste1.join();
-				teste2.join();
-				if (teste1.ehPrimo()) {
-					listaDePrimos.add(primo1);
-				}
-				if (teste2.ehPrimo()) {
-					listaDePrimos.add(primo1);
-				}
-				if (teste1.ehPrimo() && teste2.ehPrimo()) {
-					qnt++;
-					listaDeGemeos.add(primo1, primo2);
-				}
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+			if (ehPrimo1 && ehPrimo2) {
+				qnt++;
+				listaDeGemeos.add(primo1, primo2);
 			}
 		}
+	}
+
+	private boolean testaEAdiciona(BigInteger primo) {
+		boolean ehPrimo = listaDePrimos.ehPrimo(primo);
+		if (ehPrimo)
+			listaDePrimos.add(primo);
+		return ehPrimo;
 	}
 }

@@ -32,7 +32,7 @@ public class CalculadorAlgoritmo2 extends Thread {
 	}
 
 	private BigInteger primo(int i) {
-		return lista.get(i);
+		return BigInteger.valueOf(lista.get(i));
 	}
 
 	public BigInteger getSoma() {
