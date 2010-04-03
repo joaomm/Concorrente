@@ -1,23 +1,24 @@
 package ep1;
 
 import java.math.BigInteger;
-import java.util.Vector;
+import java.util.LinkedList;
 
 import ep1.calculadores.CalculadorAlgoritmo2;
 import ep1.calculadores.ProdutorDePrimos;
-import ep1.ed.Candidato;
 import ep1.ed.ListaDePrimos;
 import ep1.ed.MemoriaCompartilhada;
 
 public class Algoritmo2 {
 	private final int n;
-	private ProdutorDePrimos produtor;
 	private CalculadorAlgoritmo2 consumidor;
 	private MemoriaCompartilhada compartilhada;
-	private ProdutorDePrimos produtor2;
+	private int totalDeThreads;
+	private LinkedList<ProdutorDePrimos> produtores;
 
 	public Algoritmo2(int n, int threads) {
 		this.n = n;
+		totalDeThreads = threads;
+		produtores = new LinkedList<ProdutorDePrimos>();
 	}
 
 	public BigInteger calculaSoma() {
@@ -37,19 +38,22 @@ public class Algoritmo2 {
 	}
 
 	private void startThreads() {
-		produtor.start();
-		produtor2.start();
+		for (ProdutorDePrimos produtor : produtores) {
+			produtor.start();
+		}
 		consumidor.start();
 	}
 
 	private void createThreads() {
 		ListaDePrimos listaDePrimos = new ListaDePrimos();
-		
-		compartilhada = new MemoriaCompartilhada(n+1, listaDePrimos);
-		
-		produtor = new ProdutorDePrimos(compartilhada);
-		produtor2 = new ProdutorDePrimos(compartilhada);
-		
+
+		compartilhada = new MemoriaCompartilhada(n + 1, totalDeThreads,
+				listaDePrimos);
+
+		for (int i = 0; i < totalDeThreads; i++) {
+			produtores.add(new ProdutorDePrimos(compartilhada));
+		}
+
 		consumidor = new CalculadorAlgoritmo2(n, listaDePrimos);
 	}
 

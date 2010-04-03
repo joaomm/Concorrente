@@ -4,10 +4,12 @@ public class MemoriaCompartilhada {
 
 	private ListaDePrimos primos;
 	private int vez;
-	private final int n;
+	private final int totalDeThreads;
+	private int n;
 
-	public MemoriaCompartilhada(int n, ListaDePrimos listaDePrimos) {
+	public MemoriaCompartilhada(int n, int totalDeThreads, ListaDePrimos listaDePrimos) {
 		this.n = n;
+		this.totalDeThreads = totalDeThreads;
 		this.primos = listaDePrimos;
 		inicializaPrimos();
 		inicializaVez();
@@ -26,7 +28,7 @@ public class MemoriaCompartilhada {
 	}
 	
 	public void trocaVez() {
-		vez = (vez + 1) % 2;
+		vez = (vez + 1) % totalDeThreads;
 	}
 
 	public ListaDePrimos getPrimos() {
@@ -41,16 +43,20 @@ public class MemoriaCompartilhada {
 		primos.add(novoPrimo);
 	}
 
-	public int getPrimo(int i) {
+	public long getPrimo(int i) {
 		return primos.get(i);
 	}
 
-	public int ultimoPrimo() {
+	public long ultimoPrimo() {
 		return primos.getLast();
 	}
 
-	public boolean naoEncontroTodosPrimos() {
+	public boolean naoEncontrouTodosPrimos() {
 		return primos.size() < n;
+	}
+
+	public int getTotalDeThreads() {
+		return totalDeThreads;
 	}
 
 }

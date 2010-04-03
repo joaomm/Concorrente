@@ -3,14 +3,13 @@ package ep1.calculadores;
 import java.util.Vector;
 
 import ep1.ed.Candidato;
-import ep1.ed.ListaDePrimos;
 import ep1.ed.MemoriaCompartilhada;
 
 public class ProdutorDePrimos extends Thread {
 
 	private static final int NAOENCONTRADO = -1;
 	private static int numeroDeThreads = 0;
-	private static int tamanhoIntervalo = 1000;
+	private static int tamanhoIntervalo = 2000;
 
 	private int id;
 	private int fim;
@@ -53,7 +52,7 @@ public class ProdutorDePrimos extends Thread {
 	}
 
 	public void run() {
-		while(compartilhada.naoEncontroTodosPrimos()) {
+		while(compartilhada.naoEncontrouTodosPrimos()) {
 			marcaMultiplos();
 			if (ehMinhaVezDeEncontrarPrimo()) 
 				adicionaNovoPrimo();
@@ -62,17 +61,17 @@ public class ProdutorDePrimos extends Thread {
 
 	private void marcaMultiplos() {
 		for (int i = proximoAnalizado; i < compartilhada.totalDePrimos(); i++) {
-			int primo = compartilhada.getPrimo(i);
+			long primo = compartilhada.getPrimo(i);
 			marcaMultiplosDe(primo);
 			proximoAnalizado++;
 		}
 	}
 
-	private void marcaMultiplosDe(int primo) {
-		int primeiroMultiplo = primo + primo;
-		for (int i = primeiroMultiplo; i < fim; i += primo) {
+	private void marcaMultiplosDe(long primo) {
+		long primeiroMultiplo = primo + primo;
+		for (long i = primeiroMultiplo; i < fim; i += primo) {
 			if (i >= comeco) {
-				Candidato candidato = candidatos.get(i - comeco);
+				Candidato candidato = candidatos.get((int) (i - comeco));
 				candidato.marcaQueNaoEhPrimo();
 			}
 		}
@@ -85,12 +84,12 @@ public class ProdutorDePrimos extends Thread {
 	}
 
 	private int encontraNovoPrimo() {
-		int ultimoPrimo = compartilhada.ultimoPrimo();
-		int i = ultimoPrimo + 1;
+		long ultimoPrimo = compartilhada.ultimoPrimo();
+		long i = ultimoPrimo + 1;
 		if(ultimoPrimo < comeco) i = comeco; 
 		
 		for (; i < fim; i++) {
-			Candidato candidato = candidatos.get(i - comeco);
+			Candidato candidato = candidatos.get((int) (i - comeco));
 			if (candidato.aindaNaoFoiMarcado())
 				return candidato.getValor();
 		}
@@ -107,7 +106,7 @@ public class ProdutorDePrimos extends Thread {
 
 	private void reajustaIntervalo() {
 		int tamanho = ProdutorDePrimos.tamanhoIntervalo;
-		comeco += 2 * tamanho; 
+		comeco += compartilhada.getTotalDeThreads() * tamanho; 
 		fim = comeco + tamanho; 
 	}
 

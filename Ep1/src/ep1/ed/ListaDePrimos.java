@@ -4,19 +4,19 @@ import java.util.ArrayList;
 
 public class ListaDePrimos {
 
-	private ArrayList<Integer> lista;
+	private ArrayList<Long> lista;
 
 	public ListaDePrimos() {
-		lista = new ArrayList<Integer>();
+		lista = new ArrayList<Long>();
 	}
 
-	public void add(int item) {
+	public void add(long item) {
 		synchronized (lista) {
 			lista.add(item);
 		}
 	}
 
-	public int get(int i) {
+	public long get(int i) {
 		boolean cond = true;
 		while (cond) {
 			synchronized (lista) {
@@ -35,7 +35,7 @@ public class ListaDePrimos {
 		}
 	}
 
-	public synchronized int getLast() {
+	public synchronized long getLast() {
 		return lista.get(size() - 1);		
 	}
 
