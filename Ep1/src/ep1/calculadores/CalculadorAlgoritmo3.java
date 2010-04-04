@@ -2,8 +2,8 @@ package ep1.calculadores;
 
 import java.math.BigDecimal;
 
-import ep1.ed.Gemeos;
-import ep1.ed.MemoriaCompartilhada;
+import ep1.eds.Gemeos;
+import ep1.eds.MemoriaCompartilhada;
 
 public class CalculadorAlgoritmo3 extends Thread {
 	private final MemoriaCompartilhada compartilhada;

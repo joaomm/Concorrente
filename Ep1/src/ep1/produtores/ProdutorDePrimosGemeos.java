@@ -1,6 +1,6 @@
 package ep1.produtores;
 
-import ep1.ed.MemoriaCompartilhada;
+import ep1.eds.MemoriaCompartilhada;
 
 public class ProdutorDePrimosGemeos extends Thread {
 

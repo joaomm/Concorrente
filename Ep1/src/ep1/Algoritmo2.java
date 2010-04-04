@@ -4,7 +4,7 @@ import java.math.BigInteger;
 import java.util.LinkedList;
 
 import ep1.calculadores.CalculadorAlgoritmo2;
-import ep1.ed.MemoriaCompartilhada;
+import ep1.eds.MemoriaCompartilhada;
 import ep1.produtores.ProdutorDePrimos;
 
 public class Algoritmo2 extends Algoritmo {

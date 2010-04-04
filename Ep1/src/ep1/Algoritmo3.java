@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.LinkedList;
 
 import ep1.calculadores.CalculadorAlgoritmo3;
-import ep1.ed.MemoriaCompartilhada;
+import ep1.eds.MemoriaCompartilhada;
 import ep1.produtores.ProdutorDePrimos;
 import ep1.produtores.ProdutorDePrimosGemeos;
 

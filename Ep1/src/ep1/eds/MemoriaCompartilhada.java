@@ -1,4 +1,4 @@
-package ep1.ed;
+package ep1.eds;
 
 
 public class MemoriaCompartilhada {

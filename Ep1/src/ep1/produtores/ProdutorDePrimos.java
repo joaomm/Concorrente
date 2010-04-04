@@ -2,8 +2,8 @@ package ep1.produtores;
 
 import java.util.Vector;
 
-import ep1.ed.Candidato;
-import ep1.ed.MemoriaCompartilhada;
+import ep1.eds.Candidato;
+import ep1.eds.MemoriaCompartilhada;
 
 public class ProdutorDePrimos extends Thread {
 

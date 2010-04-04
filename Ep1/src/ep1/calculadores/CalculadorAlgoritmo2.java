@@ -2,7 +2,7 @@ package ep1.calculadores;
 
 import java.math.BigInteger;
 
-import ep1.ed.MemoriaCompartilhada;
+import ep1.eds.MemoriaCompartilhada;
 
 public class CalculadorAlgoritmo2 extends Thread {
 	private final int n;
