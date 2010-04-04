@@ -20,12 +20,12 @@ PRODUTORES = src/ep1/produtores/ProdutorDePrimosGemeos.java\
 SRC_FILES = $(EP1) $(ALGORITMOS) $(CALCULADORES) $(EDS) $(PRODUTORES)
 
 
+jar: compile
+	jar cfm ep1.jar MANIFEST.MF -C bin ep1
+
 compile: $(SRC_FILES)
 	mkdir bin
 	javac -d bin $(SRC_FILES)
-
-jar: compile
-	jar cfm MANIFEST.MF ep1.jar -C bin ep1
 
 clean:
 	rm -r bin ep1.jar
