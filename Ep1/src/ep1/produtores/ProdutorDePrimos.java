@@ -1,4 +1,4 @@
-package ep1.calculadores;
+package ep1.produtores;
 
 import java.util.Vector;
 
@@ -52,7 +52,7 @@ public class ProdutorDePrimos extends Thread {
 	}
 
 	public void run() {
-		while(compartilhada.naoEncontrouTodosPrimos()) {
+		while(! compartilhada.encontrouTodosPrimos()) {
 			marcaMultiplos();
 			if (ehMinhaVezDeEncontrarPrimo()) 
 				adicionaNovoPrimo();

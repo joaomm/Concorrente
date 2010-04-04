@@ -4,41 +4,33 @@ import java.math.BigDecimal;
 import java.util.LinkedList;
 
 import ep1.calculadores.CalculadorAlgoritmo3;
-import ep1.calculadores.ProdutorDePrimos;
-import ep1.calculadores.ProdutorDePrimosGemeos;
-import ep1.ed.ListaDePrimos;
 import ep1.ed.MemoriaCompartilhada;
+import ep1.produtores.ProdutorDePrimos;
+import ep1.produtores.ProdutorDePrimosGemeos;
 
-public class Algoritmo3 {
-	private final int n;
+public class Algoritmo3  extends Algoritmo{
 	private CalculadorAlgoritmo3 consumidor;
 	private int totalDeThreads;
 	private LinkedList<ProdutorDePrimos> produtores;
 	private ProdutorDePrimosGemeos produtorDePrimosGemeos;
 
-	public Algoritmo3(int n, int threads) {
-		this.n = n;
+	public Algoritmo3(int threads) {
+		nome = "Algoritmo 3";
 		totalDeThreads = threads;
 		produtores = new LinkedList<ProdutorDePrimos>();
 	}
 
-	public BigDecimal calculaSoma() {
-		createThreads();
-		startThreads();
-		return joinThreads();
-	}
-
-	private BigDecimal joinThreads() {
+	protected void joinThreads() {
 		try {
 			consumidor.join();
-			return consumidor.getSoma();
+			resultado = consumidor.getSoma();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-			return BigDecimal.ZERO;
+			resultado = BigDecimal.ZERO;
 		}
 	}
 
-	private void startThreads() {
+	protected void startThreads() {
 		for (ProdutorDePrimos produtor : produtores) {
 			produtor.start();
 		}
@@ -46,15 +38,14 @@ public class Algoritmo3 {
 		consumidor.start();
 	}
 
-	private void createThreads() {
-		ListaDePrimos listaDePrimos = new ListaDePrimos();
-
+	protected void createThreads() {
 		MemoriaCompartilhada compartilhada = new MemoriaCompartilhada(n,
-				totalDeThreads-1, listaDePrimos, false);
+				totalDeThreads-1, false);
 
 		for (int i = 0; i < totalDeThreads-1; i++) 
 			produtores.add(new ProdutorDePrimos(compartilhada));
 		produtorDePrimosGemeos = new ProdutorDePrimosGemeos(compartilhada);
+		
 		consumidor = new CalculadorAlgoritmo3(compartilhada);
 	}
 }

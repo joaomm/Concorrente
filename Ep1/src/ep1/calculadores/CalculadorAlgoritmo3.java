@@ -6,16 +6,12 @@ import ep1.ed.Gemeos;
 import ep1.ed.MemoriaCompartilhada;
 
 public class CalculadorAlgoritmo3 extends Thread {
-
-	private static final int PRECISAO = 10;
 	private final MemoriaCompartilhada compartilhada;
 	private BigDecimal soma;
-	private BigDecimal um;
 
 	public CalculadorAlgoritmo3(MemoriaCompartilhada compartilhada) {
 		this.compartilhada = compartilhada;
 		soma = BigDecimal.ZERO;
-		um = BigDecimal.ONE;
 	}
 
 	@Override
@@ -27,12 +23,9 @@ public class CalculadorAlgoritmo3 extends Thread {
 
 	private BigDecimal termo(int i) {
 		Gemeos gemeos = umParDeGemeos(i);
-		BigDecimal primo1 = BigDecimal.valueOf(gemeos.getPrimo1());
-		BigDecimal primo2 = BigDecimal.valueOf(gemeos.getPrimo2());
-
-		int roundDown = BigDecimal.ROUND_DOWN;
-		BigDecimal umSobrePrimo1 = um.divide(primo1, PRECISAO, roundDown);
-		BigDecimal umSobrePrimo2 = um.divide(primo2, PRECISAO, roundDown);
+		
+		BigDecimal umSobrePrimo1 = gemeos.getPrimoInvertido(1);
+		BigDecimal umSobrePrimo2 = gemeos.getPrimoInvertido(2);
 		
 		return umSobrePrimo1.add(umSobrePrimo2);
 	}
@@ -44,5 +37,4 @@ public class CalculadorAlgoritmo3 extends Thread {
 	public BigDecimal getSoma() {
 		return soma;
 	}
-
 }

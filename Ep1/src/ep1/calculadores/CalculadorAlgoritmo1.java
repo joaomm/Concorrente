@@ -14,12 +14,9 @@ public class CalculadorAlgoritmo1 extends Thread {
 	@Override
 	public void run() {
 		soma = 0;
-		double one = 1;
-		double quadrado; 
 		for (long i = begin; i <= end; i++) {
-			quadrado = i;
-			quadrado = quadrado * quadrado;
-			soma = soma + (one / quadrado);
+			double quadrado = i * i;
+			soma = soma + (1 / quadrado);
 		}
 	}
 

@@ -1,4 +1,4 @@
-package ep1.calculadores;
+package ep1.produtores;
 
 import ep1.ed.MemoriaCompartilhada;
 

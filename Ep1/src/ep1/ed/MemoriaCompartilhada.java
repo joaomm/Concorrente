@@ -1,30 +1,29 @@
 package ep1.ed;
 
-import java.util.ArrayList;
 
 public class MemoriaCompartilhada {
 
-	private ListaDePrimos primos;
-	private int vez;
 	private final int totalDeThreads;
+	private Lista<Long> primos;
+	private Lista<Gemeos> gemeos;
+	private int vez;
 	private int n;
-	private ArrayList<Gemeos> listaDeGemeos;
 	private boolean podePararPorNumeroDePrimos;
 
-	public MemoriaCompartilhada(int n, int totalDeThreads,
-			ListaDePrimos listaDePrimos, boolean podePararPorNumeroDePrimos) {
+	public MemoriaCompartilhada(int n, int threads,
+			boolean podePararPorNumeroDePrimos) {
 		this.podePararPorNumeroDePrimos = podePararPorNumeroDePrimos;
 		this.n = n;
-		this.totalDeThreads = totalDeThreads;
-		this.primos = listaDePrimos;
+		totalDeThreads = threads;
+		primos = new Lista<Long>();
+		gemeos = new Lista<Gemeos>();
+		
 		inicializaPrimos();
 		inicializaVez();
-		listaDeGemeos = new ArrayList<Gemeos>();
 	}
 
-	public MemoriaCompartilhada(int n, int totalDeThreads,
-			ListaDePrimos listaDePrimos) {
-		this(n, totalDeThreads, listaDePrimos, true);
+	public MemoriaCompartilhada(int n, int totalDeThreads) {
+		this(n, totalDeThreads, true);
 	}
 
 	private void inicializaVez() {
@@ -32,7 +31,15 @@ public class MemoriaCompartilhada {
 	}
 
 	private void inicializaPrimos() {
-		primos.add(2);
+		primos.add(Long.valueOf(2));
+	}
+
+	public int getN() {
+		return n;
+	}
+
+	public int getTotalDeThreads() {
+		return totalDeThreads;
 	}
 
 	public boolean ehVezDo(int threadId) {
@@ -43,67 +50,39 @@ public class MemoriaCompartilhada {
 		vez = (vez + 1) % totalDeThreads;
 	}
 
-	public ListaDePrimos getPrimos() {
-		return primos;
-	}
-
 	public int totalDePrimos() {
 		return primos.size();
 	}
 
 	public void adicionaPrimo(int novoPrimo) {
-		primos.add(novoPrimo);
-	}
-
-	public long getPrimo(int i) {
-		return primos.get(i);
+		primos.add(Long.valueOf(novoPrimo));
 	}
 
 	public long ultimoPrimo() {
 		return primos.getLast();
 	}
 
-	public boolean gerouTodosGemeos() {
-		return listaDeGemeos.size() == n;
+	public long getPrimo(int i) {
+		return primos.get(i);
 	}
 
-	public boolean naoEncontrouTodosPrimos() {
+	public boolean encontrouTodosPrimos() {
 		if (podePararPorNumeroDePrimos)
-			return primos.size() < n;
+			return primos.size() > n;
 		else
-			return ! gerouTodosGemeos();
+			return gerouTodosGemeos();
 	}
 
-	public int getTotalDeThreads() {
-		return totalDeThreads;
-	}
-	
 	public Gemeos getGemeos(int i) {
-		boolean cond = true;
-		while (cond) {
-			synchronized (listaDeGemeos) {
-				cond = listaDeGemeos.size() <= i;
-			}
-			if (cond)
-				skip();
-		}
-		return listaDeGemeos.get(i);
-	}
-
-	protected void skip() {
-		try {
-			Thread.sleep(50);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		return gemeos.get(i);
 	}
 
 	public void addGemeos(long primo1, long primo2) {
-		listaDeGemeos.add(new Gemeos(primo1, primo2));
+		gemeos.add(new Gemeos(primo1, primo2));
 	}
 
-	public int getN() {
-		return n;
+	public boolean gerouTodosGemeos() {
+		return gemeos.size() == n;
 	}
 
 }

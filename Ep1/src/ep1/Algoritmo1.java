@@ -4,24 +4,17 @@ import java.util.LinkedList;
 
 import ep1.calculadores.CalculadorAlgoritmo1;
 
-public class Algoritmo1 {
+public class Algoritmo1 extends Algoritmo{
 
 	private static LinkedList<CalculadorAlgoritmo1> listaDeThreads;
-	private final int n;
 	private int threads;
 
-	public Algoritmo1(int n, int threads) {
-		this.n = n;
+	public Algoritmo1(int threads) {
+		nome = "Algoritmo 1";
 		this.threads = threads;
 	}
 
-	public double calculaSoma() {
-		createThreads();
-		startThreads();
-		return joinThreads();
-	}
-
-	private double joinThreads() {
+	protected void joinThreads() {
 		double soma = 0.0;
 		try {
 			for (CalculadorAlgoritmo1 calculador : listaDeThreads) {
@@ -32,16 +25,16 @@ public class Algoritmo1 {
 			e.printStackTrace();
 		}
 
-		return soma;
+		resultado = soma;
 	}
 
-	private void startThreads() {
+	protected void startThreads() {
 		for (CalculadorAlgoritmo1 calculador : listaDeThreads) {
 			calculador.start();
 		}
 	}
 
-	private void createThreads() {
+	protected void createThreads() {
 		int begin = 1;
 		int step = n / threads;
 		int end = step;

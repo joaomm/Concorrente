@@ -2,17 +2,16 @@ package ep1.calculadores;
 
 import java.math.BigInteger;
 
-import ep1.ed.ListaDePrimos;
+import ep1.ed.MemoriaCompartilhada;
 
 public class CalculadorAlgoritmo2 extends Thread {
-
 	private final int n;
-	private final ListaDePrimos lista;
+	private final MemoriaCompartilhada compartilhada;
 	private BigInteger soma;
 
-	public CalculadorAlgoritmo2(int n, ListaDePrimos listaDePrimos) {
-		this.n = n;
-		lista = listaDePrimos;
+	public CalculadorAlgoritmo2(MemoriaCompartilhada compartilhada) {
+		this.n = compartilhada.getN();
+		this.compartilhada = compartilhada;
 		soma = BigInteger.ZERO;
 	}
 
@@ -32,11 +31,10 @@ public class CalculadorAlgoritmo2 extends Thread {
 	}
 
 	private BigInteger primo(int i) {
-		return BigInteger.valueOf(lista.get(i));
+		return BigInteger.valueOf(compartilhada.getPrimo(i));
 	}
 
 	public BigInteger getSoma() {
 		return soma;
 	}
-
 }
