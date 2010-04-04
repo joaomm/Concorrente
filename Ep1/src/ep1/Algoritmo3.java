@@ -16,7 +16,7 @@ public class Algoritmo3  extends Algoritmo{
 
 	public Algoritmo3(int threads) {
 		nome = "Algoritmo 3";
-		totalDeThreads = threads;
+		totalDeThreads = threads == 1 ? 1 : threads-1;
 		produtores = new LinkedList<ProdutorDePrimos>();
 	}
 
@@ -40,9 +40,9 @@ public class Algoritmo3  extends Algoritmo{
 
 	protected void createThreads() {
 		MemoriaCompartilhada compartilhada = new MemoriaCompartilhada(n,
-				totalDeThreads-1, false);
+				totalDeThreads, false);
 
-		for (int i = 0; i < totalDeThreads-1; i++) 
+		for (int i = 0; i < totalDeThreads; i++) 
 			produtores.add(new ProdutorDePrimos(compartilhada));
 		produtorDePrimosGemeos = new ProdutorDePrimosGemeos(compartilhada);
 		

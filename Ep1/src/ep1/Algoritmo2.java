@@ -14,7 +14,7 @@ public class Algoritmo2 extends Algoritmo {
 
 	public Algoritmo2(int threads) {
 		nome = "Algoritmo 2";
-		totalDeThreads = threads;
+		totalDeThreads = threads == 1 ? 1 : threads-1;
 		produtores = new LinkedList<ProdutorDePrimos>();
 	}
 
