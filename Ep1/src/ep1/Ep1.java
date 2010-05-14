@@ -8,11 +8,7 @@ public class Ep1 {
 	private static HashMap<Integer, Integer> tempoLimitePara;
 
 	public static void main(String[] args) {
-		tempoLimitePara = new HashMap<Integer, Integer>();
-		tempoLimitePara.put(1, 100000);
-		tempoLimitePara.put(2, 10000);
-		tempoLimitePara.put(3, 500);
-		
+		inicializaTestes();
 		if (args.length == 2) {
 			int n = Integer.parseInt(args[1]);
 			Algoritmo algoritmoSelecionado = criaAlgoritmo(args[0], n);
@@ -38,27 +34,56 @@ public class Ep1 {
 		return alg;
 	}
 
-	private static int numeroDeCores(int n, int algoritmoEscolhido) {
-		LinkedList<Long> listaDeTemposDeTeste = new LinkedList<Long>();
-		listaDeTemposDeTeste.add(Long.valueOf(0));
+	private static void inicializaTestes() {
+		tempoLimitePara = new HashMap<Integer, Integer>();
+		tempoLimitePara.put(1, 100000);
+		tempoLimitePara.put(2, 10000);
+		tempoLimitePara.put(3, 500);
+	}
 
-		if (n <= tempoLimitePara.get(algoritmoEscolhido))
+	private static int numeroDeCores(int n, int algoritmoEscolhido) {
+		if (nEhMuitoPequenoParaEsseAlgoritmo(n, algoritmoEscolhido))
 			return 1;
 
+		return rodaTestes();
+	}
+
+	private static int rodaTestes() {
+		LinkedList<Long> listaDeTemposDeTeste = inicializaListaDeTempos();
+		executaTestesEColetaResultados(listaDeTemposDeTeste);
+		return decideQualEhOMelhorValor(listaDeTemposDeTeste);
+	}
+
+	private static LinkedList<Long> inicializaListaDeTempos() {
+		LinkedList<Long> listaDeTemposDeTeste = new LinkedList<Long>();
+		listaDeTemposDeTeste.add(Long.valueOf(0));
+		return listaDeTemposDeTeste;
+	}
+
+	private static void executaTestesEColetaResultados(
+			LinkedList<Long> listaDeTemposDeTeste) {
 		for (int i = 1; true; i++) {
 			long tempoGasto = calculaTempo(i);
 
-			System.out.println("tempo do teste de " + i + " cores: "
-					+ tempoGasto);
+			System.out.println("Tempo do Teste de " + i + " cores: "
+					+ tempoGasto + "ms");
 			if (listaDeTemposDeTeste.getLast() * 1.7 > tempoGasto)
 				break;
 			listaDeTemposDeTeste.add(tempoGasto);
 		}
-		
+	}
+
+	private static int decideQualEhOMelhorValor(
+			LinkedList<Long> listaDeTemposDeTeste) {
 		int numeroDeThreadsIdeal = listaDeTemposDeTeste.size();
-		System.out.println("Decidi que é melhor rodar com "
-				+ numeroDeThreadsIdeal + " threads.");
+		System.out.println("Decisão: É melhor rodar com "
+				+ numeroDeThreadsIdeal + " threads!");
 		return numeroDeThreadsIdeal;
+	}
+
+	private static boolean nEhMuitoPequenoParaEsseAlgoritmo(int n,
+			int algoritmoEscolhido) {
+		return n <= tempoLimitePara.get(algoritmoEscolhido);
 	}
 
 	private static long calculaTempo(int i) {

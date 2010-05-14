@@ -1,5 +1,7 @@
 EP1 = src/ep1/Ep1.java
 
+TESTE = src/ep1/Teste.java
+
 ALGORITMOS = src/ep1/Algoritmo1.java\
              src/ep1/Algoritmo2.java\
              src/ep1/Algoritmo3.java\
