@@ -17,7 +17,8 @@ EDS = src/ep1/eds/Candidato.java\
 PRODUTORES = src/ep1/produtores/ProdutorDePrimosGemeos.java\
              src/ep1/produtores/ProdutorDePrimos.java
 
-SRC_FILES = $(EP1) $(ALGORITMOS) $(CALCULADORES) $(EDS) $(PRODUTORES)
+TESTE= src/ep1/Teste.java
+SRC_FILES = $(EP1) $(ALGORITMOS) $(CALCULADORES) $(EDS) $(PRODUTORES) $(TESTE)
 
 
 jar: compile
