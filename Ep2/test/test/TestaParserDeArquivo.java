@@ -1,17 +1,16 @@
 package test;
 
 import static org.junit.Assert.assertEquals;
-
-import java.util.HashMap;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import ep2.EspecificacoesDeMaquinas;
 import ep2.ParserDeArquivo;
 
 public class TestaParserDeArquivo {
 	private ParserDeArquivo parser;
-
 
 	@Before
 	public void setUp() {
@@ -20,30 +19,51 @@ public class TestaParserDeArquivo {
 
 	@Test
 	public void parserDeveriaTerUmMapaVazioSeNaoParceouNada() throws Exception {
-		HashMap<Integer, HashMap<Integer, Integer>> mapaVazio = new HashMap<Integer, HashMap<Integer, Integer>>();
-		
-		assertEquals(parser.getMapa(), mapaVazio);
+		assertTrue(parser.getEspecificacoes().vazias());
 	}
-	
+
 	@Test
-	public void parseDaMaquina1ComProduto1ETempo1DeveriaAdicionarCorretamenteNoMapa() throws Exception {
+	public void parseDaMaquina1ComProduto1ETempo1DeveriaAdicionarCorretamenteNoMapa()
+			throws Exception {
+		parseiEVerificaMapa(1, 1, 1);
+	}
+
+	@Test
+	public void parseDaMaquina2ComProduto1ETempo1DeveriaAdicionarCorretamenteNoMapa()
+			throws Exception {
+		parseiEVerificaMapa(2, 1, 1);
+	}
+
+	@Test
+	public void parseDaMaquina7ComProduto1ETempo1DeveriaAdicionarCorretamenteNoMapa()
+			throws Exception {
+		parseiEVerificaMapa(7, 1, 1);
+	}
+
+	@Test
+	public void parseDaMaquina1ComProduto2ETempo1DeveriaAdicionarCorretamenteNoMapa()
+			throws Exception {
+		parseiEVerificaMapa(1, 2, 1);
+	}
+
+	@Test
+	public void parseDaMaquina1ComProduto1ETempo2DeveriaAdicionarCorretamenteNoMapa()
+			throws Exception {
+		parseiEVerificaMapa(1, 1, 2);
+	}
+
+	@Test
+	public void parseDaMaquina1Com2Produtos() throws Exception {
 		parser.parseia("1;1;1");
-		HashMap<Integer,HashMap<Integer,Integer>> mapa = parser.getMapa();
-		assertEquals(mapa.get(1).get(1), (Integer) 1);
+		parser.parseia("1;2;1");
+		EspecificacoesDeMaquinas especificaoes = parser.getEspecificacoes();
+		assertEquals((Integer) 1, especificaoes.daMaquina(1).get(1));
+		assertEquals((Integer) 1, especificaoes.daMaquina(1).get(2));
 	}
-	
-	@Test
-	public void parseDaMaquina2ComProduto1ETempo1DeveriaAdicionarCorretamenteNoMapa() throws Exception {
-		parser.parseia("2;1;1");
-		HashMap<Integer,HashMap<Integer,Integer>> mapa = parser.getMapa();
-		assertEquals(mapa.get(2).get(1), (Integer) 1);
+
+	private void parseiEVerificaMapa(int maquinaID, int produto, Integer tempo) {
+		parser.parseia("" + maquinaID + ";" + produto + ";" + tempo);
+		EspecificacoesDeMaquinas especificacoes = parser.getEspecificacoes();
+		assertEquals(tempo, especificacoes.daMaquina(maquinaID).get(produto));
 	}
-	
-	@Test
-	public void parseDaMaquina7ComProduto1ETempo1DeveriaAdicionarCorretamenteNoMapa() throws Exception {
-		parser.parseia("7;1;1");
-		HashMap<Integer,HashMap<Integer,Integer>> mapa = parser.getMapa();
-		assertEquals(mapa.get(7).get(1), (Integer) 1);
-	}
-	
 }

@@ -1,24 +1,34 @@
 package ep2;
 
-import java.util.HashMap;
 
 public class ParserDeArquivo {
-	private HashMap<Integer, HashMap<Integer, Integer>> mapa;
+	private EspecificacoesDeMaquinas especificacoes;
+	private final String nomeDoArquivo;
 
 	public ParserDeArquivo(String nomeDoArquivo) {
-		mapa = new HashMap<Integer, HashMap<Integer, Integer>>(); 
+		this.nomeDoArquivo = nomeDoArquivo;
+		especificacoes = new EspecificacoesDeMaquinas(); 
 	}
 
-	public HashMap<Integer, HashMap<Integer, Integer>> getMapa() {
-		return mapa;
+	public EspecificacoesDeMaquinas getEspecificacoes() {
+		return especificacoes;
+	}
+	
+	public void executa(){
+		LeitorDeArquivo leitorDeArquivo = new LeitorDeArquivo(nomeDoArquivo);
+		String linha = leitorDeArquivo.proximaLinha();
+		while(linha != null)
+			parseia(linha);
 	}
 
 	public void parseia(String linha) {
 		String[] valores = linha.split(";");
-
 		Integer maquinaId = Integer.parseInt(valores[0]);
-		System.out.println(maquinaId);
-		mapa.put(maquinaId, new HashMap<Integer, Integer>());
-		mapa.get(maquinaId).put(1, 1);
+		Integer produto = Integer.parseInt(valores[1]);
+		Integer tempo = Integer.parseInt(valores[2]);
+		
+		if(especificacoes.daMaquina(maquinaId) == null)
+			especificacoes.adicionaMaquina(maquinaId);
+		especificacoes.adicionaNaMaquina(maquinaId, produto, tempo);
 	}
 }
