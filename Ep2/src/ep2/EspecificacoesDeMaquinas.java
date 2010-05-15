@@ -20,8 +20,8 @@ public class EspecificacoesDeMaquinas {
 		especificacoes.put(maquinaId, especificacaoVazia);
 	}
 
-	public void adicionaNaMaquina(int maquinaId, int produto, int tempo) {
-		daMaquina(maquinaId).put(produto, tempo);
+	public void adicionaNaMaquina(int maquinaId, int produto, int quantidade) {
+		daMaquina(maquinaId).put(produto, quantidade);
 	}
 
 	public boolean vazias() {

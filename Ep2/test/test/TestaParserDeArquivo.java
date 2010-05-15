@@ -23,31 +23,31 @@ public class TestaParserDeArquivo {
 	}
 
 	@Test
-	public void parseDaMaquina1ComProduto1ETempo1DeveriaAdicionarCorretamenteNoMapa()
+	public void parseDaMaquina1ComProduto1EQuantidade1DeveriaAdicionarCorretamenteNoMapa()
 			throws Exception {
 		parseiEVerificaMapa(1, 1, 1);
 	}
 
 	@Test
-	public void parseDaMaquina2ComProduto1ETempo1DeveriaAdicionarCorretamenteNoMapa()
+	public void parseDaMaquina2ComProduto1EQuantidade1DeveriaAdicionarCorretamenteNoMapa()
 			throws Exception {
 		parseiEVerificaMapa(2, 1, 1);
 	}
 
 	@Test
-	public void parseDaMaquina7ComProduto1ETempo1DeveriaAdicionarCorretamenteNoMapa()
+	public void parseDaMaquina7ComProduto1EQuantidade1DeveriaAdicionarCorretamenteNoMapa()
 			throws Exception {
 		parseiEVerificaMapa(7, 1, 1);
 	}
 
 	@Test
-	public void parseDaMaquina1ComProduto2ETempo1DeveriaAdicionarCorretamenteNoMapa()
+	public void parseDaMaquina1ComProduto2EQuantidade1DeveriaAdicionarCorretamenteNoMapa()
 			throws Exception {
 		parseiEVerificaMapa(1, 2, 1);
 	}
 
 	@Test
-	public void parseDaMaquina1ComProduto1ETempo2DeveriaAdicionarCorretamenteNoMapa()
+	public void parseDaMaquina1ComProduto1EQuantidade2DeveriaAdicionarCorretamenteNoMapa()
 			throws Exception {
 		parseiEVerificaMapa(1, 1, 2);
 	}
@@ -61,9 +61,9 @@ public class TestaParserDeArquivo {
 		assertEquals((Integer) 1, especificaoes.daMaquina(1).get(2));
 	}
 
-	private void parseiEVerificaMapa(int maquinaID, int produto, Integer tempo) {
-		parser.parseia("" + maquinaID + ";" + produto + ";" + tempo);
+	private void parseiEVerificaMapa(int maquinaID, int produto, Integer quantidade) {
+		parser.parseia("" + maquinaID + ";" + produto + ";" + quantidade);
 		EspecificacoesDeMaquinas especificacoes = parser.getEspecificacoes();
-		assertEquals(tempo, especificacoes.daMaquina(maquinaID).get(produto));
+		assertEquals(quantidade, especificacoes.daMaquina(maquinaID).get(produto));
 	}
 }
