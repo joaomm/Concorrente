@@ -23,7 +23,7 @@ public class Pedido {
 		return id;
 	}
 
-	public boolean status() {
+	public boolean finalizado() {
 		return pedidosEQuantidades.isEmpty();
 	}
 

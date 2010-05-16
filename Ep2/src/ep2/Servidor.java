@@ -5,8 +5,6 @@ import java.util.HashMap;
 import ep2.base.Maquina;
 
 public class Servidor {
-
-
 	public static void main(String[] args) {
 		ParserDeArquivo parser = new ParserDeArquivo(args[0]);
 		parser.executa();

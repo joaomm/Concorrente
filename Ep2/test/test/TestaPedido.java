@@ -13,7 +13,7 @@ public class TestaPedido {
 		int[] quantidades = {1000};
 		Pedido pedido = new Pedido(produtos, quantidades);
 		assertEquals(1, pedido.id());
-		assertFalse(pedido.status());
+		assertFalse(pedido.finalizado());
 	}
 	
 	@Test
@@ -95,7 +95,7 @@ public class TestaPedido {
 		Pedido pedido = new Pedido(produtos, quantidades);
 		
 		pedido.produzido(1, 1000);
-		assertTrue(pedido.status());
+		assertTrue(pedido.finalizado());
 	}
 	
 	
