@@ -18,8 +18,8 @@ public class Produto {
 		return quantidadeTotal;
 	}
 
+	//TODO: Este metodo precisa ser synchronized 
 	public void removeQuantidade(int quantidade) {
-		quantidadeTotal -= quantidade;
 		Integer quantidadeDoPedidoMaisAntigo = subtraiQuantidadeDoPedidoMaisAntigo(quantidade);
 
 		while (!pedidos.isEmpty() && quantidade >= quantidadeDoPedidoMaisAntigo) {
@@ -38,6 +38,7 @@ public class Produto {
 		return quantidadeDoUltimoPedido;
 	}
 
+	//TODO: Este metodo precisa ser synchronized com o objeto
 	public void adicionaPedido(Pedido pedido) {
 		pedidos.addLast(pedido);
 		quantidadeTotal += pedido.produtoEQuantidades().get(id);
@@ -45,6 +46,10 @@ public class Produto {
 
 	public boolean temQuantidade() {
 		return !pedidos.isEmpty();
+	}
+
+	public void assinaContrato(int quantidade) {
+		quantidadeTotal -= quantidade;
 	}
 
 }

@@ -12,14 +12,14 @@ public class TestaProduto {
 	private Produto produto;
 	private Pedido pedido1;
 	private Pedido pedido2;
-	
+
 	@Before
 	public void setUp() {
-		int[] produtos1 = {1};
-		int[] quantidades1 = {100};
-		int[] produtos2 = {1, 2};		
-		int[] quantidades2 = {200, 100};
-		
+		int[] produtos1 = { 1 };
+		int[] quantidades1 = { 100 };
+		int[] produtos2 = { 1, 2 };
+		int[] quantidades2 = { 200, 100 };
+
 		produto = new Produto(1);
 		pedido1 = new Pedido(produtos1, quantidades1);
 		pedido2 = new Pedido(produtos2, quantidades2);
@@ -37,40 +37,44 @@ public class TestaProduto {
 		produto.adicionaPedido(pedido2);
 		assertEquals(300, produto.quantidadeTotal());
 	}
-
+	
 	@Test
-	public void deveriaRemoverQuantidade() throws Exception {
+	public void deveriaSaberAssinarContratoRemovendoAQuantidadeDoTotal() throws Exception {
 		produto.adicionaPedido(pedido1);
+		produto.assinaContrato(50);
 		
-		produto.removeQuantidade(50);
 		assertEquals(50, produto.quantidadeTotal());
 	}
 
 	@Test
 	public void deveriaRemoverQuantidadeEAtualizarPedido() throws Exception {
 		produto.adicionaPedido(pedido1);
-		
+
 		produto.removeQuantidade(50);
-		assertEquals((Integer)50, pedido1.produtoEQuantidades().get(1));
+		assertEquals((Integer) 50, pedido1.produtoEQuantidades().get(1));
 	}
+
 	@Test
 	public void deveriaRemoverQuantidadeEAtualizarApenasPrimeiroPedido() throws Exception {
 		produto.adicionaPedido(pedido1);
 		produto.adicionaPedido(pedido2);
-		
+
 		produto.removeQuantidade(50);
-		assertEquals((Integer)50, pedido1.produtoEQuantidades().get(1));
-		assertEquals((Integer)200, pedido2.produtoEQuantidades().get(1));
+		assertEquals((Integer) 50, pedido1.produtoEQuantidades().get(1));
+		assertEquals((Integer) 200, pedido2.produtoEQuantidades().get(1));
 	}
+
 	@Test
-	public void deveriaRemoverQuantidadeEAtualizarAmbosPedidosQuandoQauntidadeEhMaiorDoQueADoPrimeiro() throws Exception {
+	public void deveriaRemoverQuantidadeEAtualizarAmbosPedidosQuandoQuantidadeEhMaiorDoQueADoPrimeiro()
+			throws Exception {
 		produto.adicionaPedido(pedido1);
 		produto.adicionaPedido(pedido2);
-		
+
 		produto.removeQuantidade(200);
 		assertTrue(pedido1.finalizado());
-		assertEquals((Integer)100, pedido2.produtoEQuantidades().get(1));
+		assertEquals((Integer) 100, pedido2.produtoEQuantidades().get(1));
 	}
+
 	@Test
 	public void deveriaSaberDizerSeTemProdutoPraCalcularOuNao() throws Exception {
 		assertFalse(produto.temQuantidade());
