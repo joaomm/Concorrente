@@ -5,10 +5,8 @@ import java.util.Vector;
 public class ListaDePedidos {
 
 	private Vector<Pedido> lista;
-	private final ProdutosACriar produtosACriar;
-
-	public ListaDePedidos(ProdutosACriar produtosACriar) {
-		this.produtosACriar = produtosACriar;
+	
+	public ListaDePedidos() {
 		lista = new Vector<Pedido>(1000, 100);
 	}
 
@@ -18,7 +16,6 @@ public class ListaDePedidos {
 
 	public long adicionaPedido(Pedido pedido) {
 		int pedidoId = pedido.id();
-		produtosACriar.adicionaPedido(pedido);
 		lista.setSize(pedidoId + 2);
 		lista.set(pedidoId, pedido);
 		return pedidoId;

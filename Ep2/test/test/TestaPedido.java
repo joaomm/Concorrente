@@ -97,7 +97,4 @@ public class TestaPedido {
 		pedido.produzido(1, 1000);
 		assertTrue(pedido.finalizado());
 	}
-	
-	
-	
 }

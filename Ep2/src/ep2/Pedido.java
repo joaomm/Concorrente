@@ -6,7 +6,7 @@ public class Pedido {
 
 	private static int contagemDePedidos = 1;
 	private int id;
-	private HashMap<Integer, Integer> pedidosEQuantidades;
+	private HashMap<Integer, Integer> produtosEQuantidades;
 
 	public Pedido(int[] produtos, int[] quantidades) {
 		id = contagemDePedidos++;
@@ -14,9 +14,9 @@ public class Pedido {
 	}
 
 	private void criaProdutosEQuantidades(int[] produtos, int[] quantidades) {
-		pedidosEQuantidades = new HashMap<Integer, Integer>();
+		produtosEQuantidades = new HashMap<Integer, Integer>();
 		for (int i = 0; i < produtos.length; i++) 
-			pedidosEQuantidades.put(produtos[i], quantidades[i]);
+			produtosEQuantidades.put(produtos[i], quantidades[i]);
 	}
 
 	public int id() {
@@ -24,22 +24,20 @@ public class Pedido {
 	}
 
 	public boolean finalizado() {
-		return pedidosEQuantidades.isEmpty();
+		return produtosEQuantidades.isEmpty();
 	}
 
 	public HashMap<Integer, Integer> produtoEQuantidades() {
-		return pedidosEQuantidades;
+		return produtosEQuantidades;
 	}
 
 	public void produzido(int produto, int quantidadeProduzida) {
-		int quantidadeInicial = pedidosEQuantidades.get(produto);
+		int quantidadeInicial = produtosEQuantidades.get(produto);
 		int quantidadeRestante = quantidadeInicial - quantidadeProduzida;
 		
 		if(quantidadeRestante > 0)
-			pedidosEQuantidades.put(produto, quantidadeRestante);
+			produtosEQuantidades.put(produto, quantidadeRestante);
 		else
-			pedidosEQuantidades.remove(produto);
-
+			produtosEQuantidades.remove(produto);
 	}
-
 }
