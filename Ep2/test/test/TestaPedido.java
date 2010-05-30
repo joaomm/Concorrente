@@ -8,28 +8,12 @@ import ep2.Pedido;
 
 public class TestaPedido {
 	@Test
-	public void pedidosNovosDevemTerIdEStatusFalse() throws Exception {
+	public void pedidosNovosNaoDevemTerIdMasStatusDeveSerFalse() throws Exception {
 		int[] produtos = {1};
 		int[] quantidades = {1000};
 		Pedido pedido = new Pedido(produtos, quantidades);
-		assertEquals(1, pedido.id());
+		assertEquals(-1, pedido.id());
 		assertFalse(pedido.finalizado());
-	}
-	
-	@Test
-	public void segundoPedidosDeveTerId2() throws Exception {
-		int[] produtos = {1};
-		int[] quantidades = {1000};
-		Pedido pedido = new Pedido(produtos, quantidades);
-		assertEquals(2, pedido.id());
-	}
-	
-	@Test
-	public void idDoMesmoPedidoDeveSerSempreIgual() throws Exception {
-		int[] produtos = {1};
-		int[] quantidades = {1000};
-		Pedido pedido = new Pedido(produtos, quantidades);
-		assertEquals(pedido.id(), pedido.id());
 	}
 	
 	@Test
@@ -96,5 +80,33 @@ public class TestaPedido {
 		
 		pedido.produzido(1, 1000);
 		assertTrue(pedido.finalizado());
+	}
+
+	@Test
+	public void naoDeveriaTerTinguemTrabalhandoNeleQuandoEhCriado() throws Exception {
+		int[] produtos = {1};
+		int[] quantidades = {1000};
+		Pedido pedido = new Pedido(produtos, quantidades);
+		
+		assertFalse(pedido.sendoProduzido());
+	}
+	
+	@Test
+	public void deveriaTerAlguemTrabalhandoNeleQuandoPediremParaProduzir() throws Exception {
+		int[] produtos = {1};
+		int[] quantidades = {1000};
+		Pedido pedido = new Pedido(produtos, quantidades);
+		pedido.vaiParaProducao();
+		assertTrue(pedido.sendoProduzido());
+	}
+	
+	@Test
+	public void deveriaReceberUmID() throws Exception {
+		int[] produtos = {1};
+		int[] quantidades = {1000};
+		Pedido pedido = new Pedido(produtos, quantidades);
+		assertEquals(-1, pedido.id());
+		pedido.id((long)1);
+		assertEquals(1, pedido.id());
 	}
 }

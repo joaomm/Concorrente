@@ -1,30 +1,43 @@
 package ep2;
 
-import java.util.Vector;
+import java.util.HashMap;
 
 public class ListaDePedidos {
 
-	private Vector<Pedido> lista;
-	
+	private HashMap<Long, Pedido> pedidos;
+	private long idAtual;
+	private long ultimoPedido;
+
 	public ListaDePedidos() {
-		lista = new Vector<Pedido>(1000, 100);
+		pedidos = new HashMap<Long, Pedido>(1000, 100);
+		idAtual = 1;
+		ultimoPedido = 1;
 	}
 
 	public boolean vazia() {
-		return lista.isEmpty();
+		return pedidos.isEmpty();
 	}
 
 	public long adicionaPedido(Pedido pedido) {
-		int pedidoId = pedido.id();
-		lista.setSize(pedidoId + 2);
-		lista.set(pedidoId, pedido);
+		long pedidoId = idAtual++;
+		pedido.id(pedidoId);
+		pedidos.put(pedidoId, pedido);
 		return pedidoId;
 	}
 
 	public Pedido acessaPedido(long id) {
 		if (vazia())
 			return null;
-		return lista.get((int)id);
+		return pedidos.get(id);
 	}
 
+	public Pedido proximoPedido() {
+		if (pedidos.get(ultimoPedido) == null)
+			return null;
+
+		while (pedidos.get(ultimoPedido).sendoProduzido())
+			ultimoPedido++;
+
+		return pedidos.get(ultimoPedido);
+	}
 }

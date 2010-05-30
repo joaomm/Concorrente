@@ -10,7 +10,6 @@ import org.junit.Test;
 
 import ep2.ListaDePedidos;
 import ep2.Pedido;
-import ep2.ProdutosACriar;
 
 public class TestaListaDePedidos {
 	private Pedido pedido1;
@@ -18,7 +17,6 @@ public class TestaListaDePedidos {
 	private ListaDePedidos listaDePedidos;
 	private int[] produtos1 = { 1 };
 	private int[] quantidades1 = { 100 };
-	private ProdutosACriar produtosACriar;
 
 	@Before
 	public void setUp() {
@@ -28,8 +26,7 @@ public class TestaListaDePedidos {
 		pedido1 = new Pedido(produtos1, quantidades1);
 		pedido2 = new Pedido(produtos2, quantidades2);
 
-		produtosACriar = new ProdutosACriar();
-		listaDePedidos = new ListaDePedidos(produtosACriar);		
+		listaDePedidos = new ListaDePedidos();
 	}
 
 	@Test
@@ -45,7 +42,8 @@ public class TestaListaDePedidos {
 
 	@Test
 	public void deveriaAdicionarUmPedidoRetornandoOId() throws Exception {
-		assertEquals(pedido1.id(), listaDePedidos.adicionaPedido(pedido1));
+		long idPedidoAdicionado = listaDePedidos.adicionaPedido(pedido1);
+		assertEquals(pedido1.id(), idPedidoAdicionado);
 	}
 
 	@Test
@@ -72,12 +70,20 @@ public class TestaListaDePedidos {
 		assertEquals(pedido2, listaDePedidos.acessaPedido(pedido2.id()));
 		assertEquals(pedido1, listaDePedidos.acessaPedido(pedido1.id()));
 	}
+
+	@Test
+	public void deveriaSaberRetornarPrimeiroPedido() throws Exception {
+		listaDePedidos.adicionaPedido(pedido1);
+		listaDePedidos.adicionaPedido(pedido2);
+		assertEquals(pedido1, listaDePedidos.proximoPedido());
+		assertEquals(pedido1, listaDePedidos.proximoPedido());
+		pedido1.vaiParaProducao();
+		assertEquals(pedido2, listaDePedidos.proximoPedido());
+	}
 	
 	@Test
-	public void adicionarPedidoComUmProdutoAdicionaEleNaListaDeProdutosACriar() throws Exception {
-		assertFalse(produtosACriar.precisaTrabalharEm(1));
-		listaDePedidos.adicionaPedido(pedido1);
-		assertTrue(produtosACriar.precisaTrabalharEm(1));
+	public void deveriaSaberRetornarNullSeNaoTemNenhumPedido() throws Exception {
+		assertNull(listaDePedidos.proximoPedido());
 	}
 
 	@Test
