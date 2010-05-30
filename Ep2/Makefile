@@ -35,7 +35,7 @@ jar: compile
 	jar cfm ep2.jar MANIFEST.MF -C bin ep2
 
 compile: $(SRC_FILES)
-	mkdir bin
+	mkdir -p bin
 	javac -d bin $(SRC_FILES)
 
 clean:

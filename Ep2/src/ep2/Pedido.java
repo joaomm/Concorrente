@@ -23,22 +23,25 @@ public class Pedido {
 	public void id(Long id) {
 		this.id = id;
 	}
-	
+
 	public long id() {
 		return id;
 	}
 
-	public boolean finalizado() {
+	public synchronized boolean finalizado() {
 		return produtosEQuantidades.isEmpty();
 	}
 
-	public HashMap<Integer, Integer> produtoEQuantidades() {
+	public synchronized HashMap<Integer, Integer> produtoEQuantidades() {
 		return produtosEQuantidades;
 	}
 
-	public void produzido(int produto, int quantidadeProduzida) {
+	public synchronized void produzido(int produto, int quantidadeProduzida) {
 		int quantidadeInicial = produtosEQuantidades.get(produto);
 		int quantidadeRestante = quantidadeInicial - quantidadeProduzida;
+
+		System.out.println("Pedido " + id() + " recebeu " + quantidadeProduzida + " ficando com "
+				+ quantidadeRestante);
 
 		if (quantidadeRestante > 0)
 			produtosEQuantidades.put(produto, quantidadeRestante);
@@ -46,11 +49,11 @@ public class Pedido {
 			produtosEQuantidades.remove(produto);
 	}
 
-	public boolean sendoProduzido() {
+	public synchronized boolean sendoProduzido() {
 		return sendoProduzido;
 	}
 
-	public void vaiParaProducao() {
+	public synchronized void vaiParaProducao() {
 		sendoProduzido = true;
 	}
 }

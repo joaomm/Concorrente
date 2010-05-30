@@ -17,8 +17,10 @@ public class ParserDeArquivo {
 	public void executa(){
 		LeitorDeArquivo leitorDeArquivo = new LeitorDeArquivo(nomeDoArquivo);
 		String linha = leitorDeArquivo.proximaLinha();
-		while(linha != null)
+		while(linha != null){
 			parseia(linha);
+			linha = leitorDeArquivo.proximaLinha();
+		}
 	}
 
 	public void parseia(String linha) {

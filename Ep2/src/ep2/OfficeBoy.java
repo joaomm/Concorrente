@@ -16,6 +16,7 @@ public class OfficeBoy extends Thread {
 			CasaDeMaquinas casaDeMaquinas) {
 		this.especificacoes = especificacoes;
 		this.listaDePedidos = listaDePedidos;
+		this.casaDeMaquinas = casaDeMaquinas;
 	}
 
 	@Override
@@ -26,11 +27,16 @@ public class OfficeBoy extends Thread {
 			repassouOTrabalho = false;
 			while (!repassouOTrabalho) {
 				entraNaCasaDeMaquinas();
+				System.out.println("OfficeBoy " + getId() + " entrou na Secao Critica");
 				if (casaDeMaquinas.consegueFazer(configuracaoIdeal)) {
 					repassaTrabalho(configuracaoIdeal);
 					saiDaCasaDeMaquinas();
+					System.out.println("\tOfficeBoy " + getId()
+							+ " repassou trabalho e saiu da S.C.");
 				} else {
 					saiDaCasaDeMaquinas();
+					System.out.println("\tOfficeBoy " + getId()
+							+ " NAO repassou trabalho e saiu da S.C.");
 					skip();
 				}
 			}
@@ -43,7 +49,7 @@ public class OfficeBoy extends Thread {
 
 	private void repassaTrabalho(EspecificacoesDeMaquinas configuracaoIdeal) {
 		repassouOTrabalho = true;
-		casaDeMaquinas.recebe(configuracaoIdeal);
+		casaDeMaquinas.recebe(configuracaoIdeal, pedido);
 	}
 
 	private void saiDaCasaDeMaquinas() {
@@ -56,6 +62,7 @@ public class OfficeBoy extends Thread {
 			skip();
 			pedido = listaDePedidos.proximoPedido();
 		}
+		System.out.println("Officeboy " + this.getId() + " pegou pedido " + pedido.id());
 		pedido.vaiParaProducao();
 	}
 
@@ -104,7 +111,8 @@ public class OfficeBoy extends Thread {
 		try {
 			sleep(1000);
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			System.out.println("Office Boy morto: " + getId());
+			System.exit(0);
 		}
 	}
 }

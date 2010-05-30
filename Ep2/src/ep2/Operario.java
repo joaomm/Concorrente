@@ -9,6 +9,7 @@ public class Operario extends Thread {
 	private final Maquina maquina;
 	private boolean ocupado;
 	private HashMap<Integer, Integer> trabalho;
+	private Pedido pedido;
 
 	public Operario(Maquina maquina) {
 		this.maquina = maquina;
@@ -33,19 +34,23 @@ public class Operario extends Thread {
 		try {
 			sleep(1000);
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			System.out.println("Operario mandado embora: " + getId());
+			System.exit(0);
 		}
 	}
 
 	public void trabalha() {
 		for (Integer produto : trabalho.keySet()) {
-			maquina.processa(produto, trabalho.get(produto));
+			Integer quantidade = trabalho.get(produto);
+			maquina.processa(produto, quantidade);
+			pedido.produzido(produto, quantidade);
 		}
 		ocupado = false;
 	}
 
-	public void recebeTrabalho(HashMap<Integer, Integer> trabalho) {
+	public void recebeTrabalho(HashMap<Integer, Integer> trabalho, Pedido pedido) {
 		this.trabalho = trabalho;
+		this.pedido = pedido;
 		ocupado = true;
 	}
 

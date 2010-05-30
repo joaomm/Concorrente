@@ -14,28 +14,28 @@ public class ListaDePedidos {
 		ultimoPedido = 1;
 	}
 
-	public boolean vazia() {
+	public synchronized boolean vazia() {
 		return pedidos.isEmpty();
 	}
 
-	public long adicionaPedido(Pedido pedido) {
+	public synchronized long adicionaPedido(Pedido pedido) {
 		long pedidoId = idAtual++;
 		pedido.id(pedidoId);
 		pedidos.put(pedidoId, pedido);
 		return pedidoId;
 	}
 
-	public Pedido acessaPedido(long id) {
+	public synchronized Pedido acessaPedido(long id) {
 		if (vazia())
 			return null;
 		return pedidos.get(id);
 	}
 
-	public Pedido proximoPedido() {
+	public synchronized Pedido proximoPedido() {
 		if (pedidos.get(ultimoPedido) == null)
 			return null;
 
-		while (pedidos.get(ultimoPedido).sendoProduzido())
+		if (pedidos.get(ultimoPedido).sendoProduzido())
 			ultimoPedido++;
 
 		return pedidos.get(ultimoPedido);
