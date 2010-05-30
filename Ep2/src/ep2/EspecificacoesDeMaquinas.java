@@ -16,8 +16,10 @@ public class EspecificacoesDeMaquinas {
 	}
 
 	public void adicionaMaquina(Integer maquinaId) {
-		HashMap<Integer, Integer> especificacaoVazia = new HashMap<Integer, Integer>();
-		especificacoes.put(maquinaId, especificacaoVazia);
+		if (especificacoes.get(maquinaId) == null){
+			HashMap<Integer, Integer> especificacaoVazia = new HashMap<Integer, Integer>();
+			especificacoes.put(maquinaId, especificacaoVazia);
+		}
 	}
 
 	public void adicionaNaMaquina(int maquinaId, int produto, int quantidade) {

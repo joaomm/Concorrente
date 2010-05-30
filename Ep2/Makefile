@@ -1,34 +1,42 @@
-EP1 = src/ep1/Ep1.java
+EP2 = src/ep2/Servidor.java
 
-TESTE = src/ep1/Teste.java
 
-ALGORITMOS = src/ep1/Algoritmo1.java\
-             src/ep1/Algoritmo2.java\
-             src/ep1/Algoritmo3.java\
-             src/ep1/Algoritmo.java
 
-CALCULADORES = src/ep1/calculadores/CalculadorAlgoritmo1.java\
-               src/ep1/calculadores/CalculadorAlgoritmo2.java\
-               src/ep1/calculadores/CalculadorAlgoritmo3.java
+EP2_NOSSO = src/ep2/CasaDeMaquinas.java\
+	src/ep2/EspecificacoesDeMaquinas.java\
+	src/ep2/FabricaImpl.java\
+	src/ep2/LeitorDeArquivo.java\
+	src/ep2/ListaDePedidos.java\
+	src/ep2/OfficeBoy.java\
+	src/ep2/Operario.java\
+	src/ep2/ParserDeArquivo.java\
+	src/ep2/Pedido.java\
+	src/ep2/Servidor.java
 
-EDS = src/ep1/eds/Candidato.java\
-      src/ep1/eds/Gemeos.java\
-      src/ep1/eds/Lista.java\
-      src/ep1/eds/MemoriaCompartilhada.java
+MAQUINA = src/ep2/base/Maquina.java
 
-PRODUTORES = src/ep1/produtores/ProdutorDePrimosGemeos.java\
-             src/ep1/produtores/ProdutorDePrimos.java
+CLIENTE = src/ep2/base/client/Fabrica.java\
+	src/ep2/base/client/FabricaService.java\
+	src/ep2/base/client/IsProducaoPronta.java\
+	src/ep2/base/client/IsProducaoProntaResponse.java\
+	src/ep2/base/client/ObjectFactory.java\
+	src/ep2/base/client/package-info.java\
+	src/ep2/base/client/Produz.java\
+	src/ep2/base/client/ProduzResponse.java
 
-TESTE= src/ep1/Teste.java
-SRC_FILES = $(EP1) $(ALGORITMOS) $(CALCULADORES) $(EDS) $(PRODUTORES) $(TESTE)
+SERVER = src/ep2/base/server/Fabrica.java
+
+
+
+SRC_FILES = $(EP2_NOSSO) $(MAQUINA) $(CLIENTE) $(SERVER)
 
 
 jar: compile
-	jar cfm ep1.jar MANIFEST.MF -C bin ep1
+	jar cfm ep2.jar MANIFEST.MF -C bin ep2
 
 compile: $(SRC_FILES)
 	mkdir bin
 	javac -d bin $(SRC_FILES)
 
 clean:
-	rm -r bin ep1.jar
+	rm -r bin ep2.jar
