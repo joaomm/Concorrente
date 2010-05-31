@@ -17,8 +17,8 @@ public class Servidor {
 	private static LinkedList<OfficeBoy> officeBoys;
 
 	public static void main(String[] args) throws Exception {
-		// numeroDeCores = Runtime.getRuntime().availableProcessors();
-		numeroDeCores = 1;
+		numeroDeCores = Runtime.getRuntime().availableProcessors();
+//		numeroDeCores = 1;
 
 		ParserDeArquivo parser = new ParserDeArquivo(args[0]);
 		parser.executa();
