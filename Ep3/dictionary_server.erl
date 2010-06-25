@@ -7,7 +7,7 @@
 
 %% Se o servidor já estiver de pé, deve levantar um erro, seja este qual for.
 start() ->
-    register(dictionary, spawn(fun () -> loop([]) end)),
+    register(dictionary, spawn(fun () -> loop([], 0) end)),
     server_started.
 
 %% Se o servidor não estiver de pé, nao faz nada.
@@ -52,65 +52,70 @@ lookup(Key) ->
 
 
 clear() ->
+    dictionary ! clear,
     cleared.
 
 size() ->
-    0.
+    MyPID = self(),
+    dictionary ! {MyPID, size},
+    receive
+	{MyPID, Size} ->
+	    Size
+    end.
 
 
-loop(Dictionary) ->
+loop(Dictionary, Size) ->
     receive
 	stop ->
 	    done;
+	clear -> 
+	    loop([], 0);
+	{From, size} -> 
+	    From ! {From, Size},
+	    loop(Dictionary, Size);
 	{From, insert, Tuple} -> 
-	    NewDictionary = insertInDictionary(Tuple, Dictionary),
+	    {NewDictionary, NewSize} = insertInDictionary(Tuple, Dictionary, Size),
 	    From ! {From, NewDictionary},
-	    loop(NewDictionary);
+	    loop(NewDictionary, NewSize);
 	{From, remove, Key} -> 
-	    NewDictionary = removeFromDictionary(Key, Dictionary, []),
-	    case NewDictionary == Dictionary of
-		true ->
-		    From ! {From, notfound};
-		false ->
-		    From ! {From, ok}
-	    end,
-	    loop(NewDictionary);
+	    {NewDictionary, Status, NewSize} = removeFromDictionary(Key, Dictionary, Size),
+            From ! {From, Status},
+	    loop(NewDictionary, NewSize);
 	{From, lookup, Key} -> 
 	    Found = lookupInDictionary(Key, Dictionary),
 	    From ! {From, Found},
-	    loop(Dictionary);
-	{From, Msg} -> 
-	    From ! Msg,
-	    loop(Dictionary)
+	    loop(Dictionary, Size)
     end.
 
 
 
 
 
-insertInDictionary(Tuple, Dictionary) ->
-    [Tuple | Dictionary].
+insertInDictionary({Key, Value}, Dictionary, Size) ->
+    case lists:keymember(Key, 1, Dictionary) of
+        false ->
+            {[{Key, Value} | Dictionary], Size+1};
+        true ->
+            {lists:keyreplace(Key, 1, Dictionary, {Key, Value}) , Size}
+    end.
+    
 
 
 
-lookupInDictionary(_Key, []) ->
-    notfound;
-lookupInDictionary(Key, [{KeyT, Value} |T]) ->
-    case Key == KeyT of
-	true ->
-	    Value;
-	false ->
-	    lookupInDictionary(Key, T)
+lookupInDictionary(Key, Dictionary) ->
+    case lists:keyfind(Key, 1, Dictionary) of
+        false ->
+	    notfound;
+	{Key, Value} ->
+	    Value
     end.
 
 
 
-removeFromDictionary(_Key, [], RemovedDictionary) ->
-    RemovedDictionary;
-removeFromDictionary(Key, [{KeyT, Value} |T], RemovedDictionary) ->
-    case Key == KeyT of
-	true ->
-	    removeFromDictionary(Key, T, RemovedDictionary);
+removeFromDictionary(Key, Dictionary, Size) ->
+    case lists:keymember(Key, 1, Dictionary) of
 	false ->
-	    removeFromDictionary(Key, T, [{KeyT, Value} | RemovedDictionary])
+	    {Dictionary, notfound, Size};
+	true ->
+	    {lists:keydelete(Key, 1, Dictionary), ok, Size-1}
     end.

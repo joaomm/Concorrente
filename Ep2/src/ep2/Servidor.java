@@ -65,7 +65,7 @@ public class Servidor {
 		endpoint.setExecutor(threads);
 		Thread th = new Thread() {
 			public void run() {
-				endpoint.publish("http://localhost:8080/fabrica");
+				endpoint.publish("http://localhost:8000/fabrica");
 			}
 		};
 		th.start();
